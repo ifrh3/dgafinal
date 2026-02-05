@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap');
+
+body { 
+  font-family: 'IBM Plex Sans Arabic', sans-serif; 
+  background-color: #F9FAFB; 
+}
+
+.font-ibm { 
+  font-family: 'IBM Plex Sans Arabic', sans-serif; 
+}
+
+::-webkit-scrollbar { 
+  width: 6px; 
+}
+
+::-webkit-scrollbar-track { 
+  background: #f1f1f1; 
+}
+
+::-webkit-scrollbar-thumb { 
+  background: #C69C6D; 
+  border-radius: 4px; 
+}
+
+.animate-fadeIn { 
+  animation: fadeIn 0.4s ease-out forwards; 
+}
+
+@keyframes fadeIn { 
+  from { 
+    opacity: 0; 
+    transform: translateY(10px); 
+  } 
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  } 
+}
+
+.dir-ltr {
+  direction: ltr;
+}
+
+.dir-rtl {
+  direction: rtl;
+}
