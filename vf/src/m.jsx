@@ -2601,7 +2601,7 @@ const UserManagementView = ({ onShowToast }) => {
 /* ========================================================================
    MAIN APP CONTROLLER
    ======================================================================== */
-   
+
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [viewState, setViewState] = useState('landing');
@@ -2609,69 +2609,8 @@ const App = () => {
   const [url, setUrl] = useState('');
   const [activePage, setActivePage] = useState('dashboard');
   const [toast, setToast] = useState({ show: false, message: '' });
-  const [currentPage, setCurrentPage] = useState('dashboard'); // الحالة الأساسية للتنقل
 
-
-  // نظام التنقل البسيط
-  const renderContent = () => {
-    switch (currentPage) {
-      case 'dashboard':
-        return (
-          <DashboardView 
-            onNavigateToGeneral={() => setCurrentPage('general_dashboard')} 
-            onNavigateToDetails={() => setCurrentPage('platform_details')} 
-          />
-        );
-      case 'general_dashboard':
-        return (
-          <div className="p-8 text-right">
-            <button onClick={() => setCurrentPage('dashboard')} className="text-[#006C35] mb-4 font-bold">← العودة للرئيسية</button>
-            <h1 className="text-3xl font-bold">لوحة التحكم العامة</h1>
-            <p className="text-gray-500">محتوى الإحصائيات العامة يظهر هنا.</p>
-          </div>
-        );
-      case 'platform_details':
-        return (
-          <div className="p-8 text-right">
-            <button onClick={() => setCurrentPage('dashboard')} className="text-[#006C35] mb-4 font-bold">← العودة للرئيسية</button>
-            <h1 className="text-3xl font-bold">تفاصيل المنصة والتقارير</h1>
-            <p className="text-gray-500">هنا تظهر نتائج الفحص التفصيلية.</p>
-          </div>
-        );
-      default:
-        return <DashboardView onNavigateToGeneral={() => setCurrentPage('general_dashboard')} onNavigateToDetails={() => setCurrentPage('platform_details')} />;
-    }
-  };
-
-  return (
-    <div className="min-h-screen bg-[#F8F9FA] flex flex-col" dir="rtl" style={{ fontFamily: '"IBM Plex Sans Arabic", sans-serif' }}>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap');
-        .animate-fadeIn { animation: fadeIn 0.3s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-      `}</style>
-
-      {/* الهيدر */}
-      <header className="bg-white border-b sticky top-0 z-50 px-4 md:px-8 py-4 flex justify-between items-center shadow-sm">
-        <div className="flex items-center gap-2 cursor-pointer" onClick={() => setCurrentPage('dashboard')}>
-          <div className="w-8 h-8 bg-[#006C35] rounded flex items-center justify-center text-white">
-            <DgaLogo className="w-5 h-5" />
-          </div>
-          <span className="font-bold text-sm">منصة الأمتثال الرقمي</span>
-        </div>
-        <div className="flex gap-4">
-          <button className="text-xs font-bold text-gray-500">English</button>
-          <button className="p-2 bg-gray-100 rounded-full text-gray-500"><User className="w-4 h-4" /></button>
-        </div>
-      </header>
-
-      {/* المحتوى المتغير */}
-      <main className="max-w-7xl mx-auto w-full p-6 md:p-8 flex-grow">
-        {renderContent()}
-      </main>
-    </div>
-  );
-}
+  // لازم يكون قبل أي return
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [activePage, viewState]);
@@ -2694,7 +2633,7 @@ const App = () => {
   };
 
   const startScan = () => {
-    if(url) setViewState('scanning');
+    if (url) setViewState('scanning');
     else alert('الرجاء إدخال الرابط أولاً');
   };
 
@@ -2703,15 +2642,11 @@ const App = () => {
       setActivePage('dashboard');
       setTimeout(() => {
         const element = document.getElementById('platforms-list');
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
+        if (element) element.scrollIntoView({ behavior: 'smooth' });
       }, 100);
     } else {
       const element = document.getElementById('platforms-list');
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
+      if (element) element.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -2723,12 +2658,19 @@ const App = () => {
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   `;
 
+  // =======================
+  // Logged In (Dashboard)
+  // =======================
   if (isLoggedIn) {
-
     return (
       <>
         <style>{globalStyles}</style>
-        <div className="min-h-screen bg-[#F8F9FA] text-[#111827]" dir="rtl" style={{ fontFamily: '"IBM Plex Sans Arabic", sans-serif' }}>
+
+        <div
+          className="min-h-screen bg-[#F8F9FA] text-[#111827]"
+          dir="rtl"
+          style={{ fontFamily: '"IBM Plex Sans Arabic", sans-serif' }}
+        >
           <style>{`
             @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap');
             ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -2745,9 +2687,9 @@ const App = () => {
             }
           `}</style>
 
-          <DashboardHeader 
-            activePage={activePage} 
-            setActivePage={setActivePage} 
+          <DashboardHeader
+            activePage={activePage}
+            setActivePage={setActivePage}
             onNavigateToPlatforms={scrollToPlatforms}
             onLogout={handleLogout}
           />
@@ -2755,29 +2697,39 @@ const App = () => {
           <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 min-h-[calc(100vh-300px)]">
             <DashboardToast show={toast.show} message={toast.message} />
 
-            {activePage === 'dashboard' && <DashboardView onNavigateToGeneral={() => setActivePage('general_dashboard')} onNavigateToDetails={() => setActivePage('platform_details')} />}
+            {activePage === 'dashboard' && (
+              <DashboardView
+                onNavigateToGeneral={() => setActivePage('general_dashboard')}
+                onNavigateToDetails={() => setActivePage('platform_details')}
+              />
+            )}
+
             {activePage === 'users' && <UserManagementView onShowToast={showToast} />}
-            {activePage === 'platforms' && <div className="text-center py-20 text-gray-500">صفحة المنصات (قيد التطوير)</div>}
-            {activePage === 'general_dashboard' && <GeneralDashboardView onNavigateToHome={() => setActivePage('dashboard')} />}
-            
-            {activePage === 'platform_details' && 
-              <PlatformDetailsView 
-                onShowToast={showToast} 
-                onNavigateToHome={() => setActivePage('dashboard')} 
-                onNavigateToPlatforms={scrollToPlatforms} 
+
+            {activePage === 'platforms' && (
+              <div className="text-center py-20 text-gray-500">صفحة المنصات (قيد التطوير)</div>
+            )}
+
+            {activePage === 'general_dashboard' && (
+              <GeneralDashboardView onNavigateToHome={() => setActivePage('dashboard')} />
+            )}
+
+            {activePage === 'platform_details' && (
+              <PlatformDetailsView
+                onShowToast={showToast}
+                onNavigateToHome={() => setActivePage('dashboard')}
+                onNavigateToPlatforms={scrollToPlatforms}
                 onNavigateToMeasurement={() => setActivePage('measurement_process')}
               />
-            }
+            )}
 
-            {activePage === 'measurement_process' && 
-              <MeasurementProcessView 
-                onNavigateToDetails={() => setActivePage('platform_details')} 
+            {activePage === 'measurement_process' && (
+              <MeasurementProcessView
+                onNavigateToDetails={() => setActivePage('platform_details')}
                 onShowToast={showToast}
                 onNavigateToHome={() => setActivePage('dashboard')}
               />
-            }
-
-            
+            )}
           </main>
 
           <DashboardFooter />
@@ -2786,17 +2738,23 @@ const App = () => {
     );
   }
 
+  // =======================
+  // Logged Out (Landing / Scan)
+  // =======================
   return (
     <>
       <style>{globalStyles}</style>
+
       <div className="font-ibm min-h-screen text-right flex flex-col" dir="rtl">
         <style>{fontStyles}</style>
-        
+
         {viewState !== 'dashboard' && <Header onLoginClick={() => setLoginOpen(true)} />}
 
         <main className="flex-grow">
-          {viewState === 'landing' && <LandingPage scanningUrl={url} setScanningUrl={setUrl} onStartScan={startScan} />}
-          
+          {viewState === 'landing' && (
+            <LandingPage scanningUrl={url} setScanningUrl={setUrl} onStartScan={startScan} />
+          )}
+
           {viewState === 'scanning' && (
             <div className="pt-32 min-h-screen bg-[#F9FAFB] flex flex-col items-center">
               <ScanningLoader url={url} onComplete={() => setViewState('report')} />
@@ -2805,7 +2763,13 @@ const App = () => {
 
           {viewState === 'report' && (
             <div className="pt-24 bg-[#F9FAFB]">
-              <ReportView url={url} onReset={() => { setUrl(''); setViewState('landing'); }} />
+              <ReportView
+                url={url}
+                onReset={() => {
+                  setUrl('');
+                  setViewState('landing');
+                }}
+              />
               <UnifiedFooter isDashboard={false} />
             </div>
           )}
@@ -2818,4 +2782,3 @@ const App = () => {
 };
 
 export default App;
-
