@@ -10,7 +10,7 @@ import {
   AlertCircle, Download, Users, Calendar, PlayCircle, Briefcase,
   Monitor, Landmark, Cpu, ExternalLink, MessageSquarePlus, Layout,
   BookOpen, History, Code, Save, Cloud, FileWarning,
-  ChevronUp, ArrowRight, BarChart3, PieChart as PieChartIcon
+  ChevronUp, ArrowRight, BarChart3, Activity, PieChart as PieChartIcon
 } from 'lucide-react';
 import { 
   PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, 
@@ -18,9 +18,51 @@ import {
   Area, AreaChart, Legend
 } from 'recharts';
 
+
 /* ========================================================================
    GLOBAL CONFIG & STYLES
    ======================================================================== */
+const lowComplianceData = [
+  { name: 'منصة X', value: 45 },
+  { name: 'منصة Y', value: 52 },
+  { name: 'منصة Z', value: 58 },
+  { name: 'منصة W', value: 62 },
+  { name: 'منصة V', value: 65 },
+];
+
+const topComplianceData = [
+  { name: 'أبشر', primary: 98, secondary: 95 },
+  { name: 'توكلنا', primary: 96, secondary: 92 },
+  { name: 'ناجز', primary: 95, secondary: 88 },
+  { name: 'صحتي', primary: 94, secondary: 90 },
+  { name: 'إحسان', primary: 92, secondary: 85 },
+  { name: 'اعتماد', primary: 90, secondary: 82 },
+  { name: 'قوى', primary: 88, secondary: 80 },
+  { name: 'مدرستي', primary: 87, secondary: 85 },
+  { name: 'سابر', primary: 85, secondary: 78 },
+  { name: 'مساند', primary: 84, secondary: 75 },
+];
+const NavCard = ({ title, subtitle, icon: Icon, bgColor, onClick }) => (
+  <div 
+    onClick={onClick} 
+    className={`cursor-pointer ${bgColor || 'bg-gray-800'} rounded-xl p-6 text-white shadow-md hover:shadow-xl hover:-translate-y-1 transition-all group flex flex-col justify-between h-40 relative overflow-hidden`}
+  >
+    <div className="relative z-10 flex flex-col h-full justify-between">
+      <div className="flex justify-between items-start">
+        <div className="p-2 bg-white/10 rounded-lg backdrop-blur-sm">
+          {Icon && <Icon className="w-8 h-8 text-white" />}
+        </div>
+        <ArrowRight className="w-5 h-5 opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all duration-300" />
+      </div>
+      <div>
+        <h3 className="text-xl font-bold mt-2">{title}</h3>
+        <p className="text-sm text-white/80 mt-1 opacity-80">{subtitle}</p>
+      </div>
+    </div>
+    <div className="absolute -left-8 -bottom-8 w-32 h-32 bg-white opacity-10 rounded-full group-hover:scale-150 transition-transform duration-700 ease-out"></div>
+  </div>
+);
+
 const COLORS = {
   primary: '#006C35', // DGA Green
   hover: '#000000',   // Black for Hover
@@ -1058,77 +1100,58 @@ const ComplianceSelector = ({ value, onChange }) => {
 /* ========================================================================
    DASHBOARD VIEWS
    ======================================================================== */
+const NavCard2 = ({ title, subtitle, icon: Icon, bgColor, onClick }) => {
+  return (
+    <div 
+      onClick={onClick} 
+      className={`cursor-pointer ${bgColor || 'bg-gray-800'} rounded-xl p-6 text-white shadow-md hover:shadow-xl hover:-translate-y-1 transition-all group flex flex-col justify-between h-40 relative overflow-hidden`}
+    >
+      <div className="relative z-10 flex flex-col h-full justify-between">
+        <div className="flex justify-between items-start">
+          <div className="p-2 bg-white/10 rounded-lg backdrop-blur-sm">
+            {Icon && <Icon className="w-8 h-8 text-white" />}
+          </div>
+          <ArrowRight className="w-5 h-5 opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all duration-300" />
+        </div>
+        <div>
+          <h3 className="text-xl font-bold mt-2">{title}</h3>
+          <p className="text-sm text-white/80 mt-1 opacity-80">{subtitle}</p>
+        </div>
+      </div>
+      <div className="absolute -left-8 -bottom-8 w-32 h-32 bg-white opacity-10 rounded-full group-hover:scale-150 transition-transform duration-700 ease-out"></div>
+    </div>
+  );
+};
 
-// --- Dashboard View (Home) ---
+/* 2. تعريف مكون عرض لوحة التحكم (DashboardView) - يستقبل onNavigate */
 const DashboardView = ({ onNavigateToGeneral, onNavigateToDetails }) => (
   <div className="space-y-8 animate-fadeIn">
-    <section>
-      <div className="flex items-end justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-[#111827] flex items-center gap-2">
-            <span className="w-1.5 h-6 bg-[#006C35] rounded-full inline-block"></span>
-            نظرة عامة
-          </h1>
-          <p className="text-sm text-gray-500 mt-1 mr-4">ملخص الأداء السنوي لعام 2025</p>
-        </div>
-      </div>
+    <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <NavCard 
+        title="المنصات الحكومية"
+        subtitle="قائمة المنصات والتقارير"
+        icon={Building2}
+        bgColor="bg-[#C69C6D]"
+        onClick={onNavigateToDetails} // استخدام البروب الصحيح
+      />
+      
+      <NavCard 
+        title="لوحة التحكم العامة"
+        subtitle="تحليلات الأداء والامتثال"
+        icon={Activity}
+        bgColor="bg-[#006C35]"
+        onClick={onNavigateToGeneral} // استخدام البروب الصحيح
+      />
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="text-base font-bold text-gray-900">المنصات الممتثلة</h3>
-            <span className="text-xs px-2 py-1 bg-green-50 text-[#006C35] rounded-md font-medium">محدث</span>
-          </div>
-          <div className="h-[280px] w-full" dir="ltr">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={barData} barSize={12}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F3F4F6" />
-                <XAxis dataKey="name" tick={{fontSize: 11, fill: '#6B7280'}} axisLine={false} tickLine={false} dy={10} interval={0} />
-                <YAxis tick={{fontSize: 11, fill: '#6B7280'}} axisLine={false} tickLine={false} dx={-10} />
-                <Tooltip cursor={{fill: '#F9FAFB'}} contentStyle={{borderRadius: '8px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', fontFamily: 'IBM Plex Sans Arabic'}} />
-                <Bar dataKey="value" fill="#006C35" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-        <div className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="text-base font-bold text-gray-900">نسبة التبني الشهرية</h3>
-            <div className="flex gap-2">
-                <div className="w-2 h-2 rounded-full bg-[#006C35]"></div>
-                <span className="text-xs text-gray-500">المؤشر العام</span>
-            </div>
-          </div>
-          <div className="h-[280px] w-full" dir="ltr">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={lineData}>
-                <defs>
-                  <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#006C35" stopOpacity={0.1}/>
-                    <stop offset="95%" stopColor="#006C35" stopOpacity={0}/>
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F3F4F6" />
-                <XAxis dataKey="name" tick={{fontSize: 11, fill: '#6B7280'}} axisLine={false} tickLine={false} dy={10} interval={0} />
-                <YAxis tick={{fontSize: 11, fill: '#6B7280'}} axisLine={false} tickLine={false} dx={-10} />
-                <Tooltip contentStyle={{borderRadius: '8px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', fontFamily: 'IBM Plex Sans Arabic'}} />
-                <Area type="monotone" dataKey="value" stroke="#006C35" strokeWidth={2} fillOpacity={1} fill="url(#colorValue)" />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-6 flex justify-center">
-        <button 
-          onClick={onNavigateToGeneral}
-          className="bg-white border border-[#006C35] text-[#006C35] px-8 py-3 rounded-lg text-sm font-bold hover:bg-[#006C35] hover:text-white transition-all shadow-sm flex items-center gap-2"
-        >
-           المزيد من التفاصيل
-           <ArrowRight className="w-4 h-4" />
-        </button>
-      </div>
+      <NavCard 
+        title="إدارة المستخدمين"
+        subtitle="إدارة الصلاحيات والموظفين"
+        icon={Users}
+        bgColor="bg-[#1F2937]"
+        onClick={() => {}} // يمكن ربطها لاحقاً
+      />
     </section>
+
 
     <section id="platforms-list" className="bg-white rounded-xl border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.04)] overflow-hidden scroll-mt-24">
       <div className="p-6 border-b border-gray-100 grid grid-cols-1 md:grid-cols-3 items-center gap-4">
@@ -1262,15 +1285,12 @@ const GeneralDashboardView = ({ onNavigateToHome }) => {
         <div className="bg-white rounded-xl border border-gray-100 p-4 shadow-sm grid grid-cols-1 md:grid-cols-3 gap-4">
            <div className="relative">
               <label className="block text-xs font-bold text-gray-500 mb-1">التاريخ</label>
-              <div className="relative">
-                <input type="month" className="w-full bg-gray-50 border border-gray-200 text-gray-700 py-2.5 px-3 rounded-lg text-sm focus:outline-none focus:border-[#006C35] focus:ring-1 focus:ring-[#006C35]" />
-              </div>
+              <input type="month" className="w-full bg-gray-50 border border-gray-200 text-gray-700 py-2.5 px-3 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-[#006C35]" />
            </div>
-           
            <div className="relative">
               <label className="block text-xs font-bold text-gray-500 mb-1">دورة التقييم</label>
               <div className="relative">
-                <select className="w-full bg-gray-50 border border-gray-200 text-gray-700 py-2.5 px-3 pr-8 rounded-lg text-sm appearance-none focus:outline-none focus:border-[#006C35] focus:ring-1 focus:ring-[#006C35]">
+                <select className="w-full bg-gray-50 border border-gray-200 text-gray-700 py-2.5 px-3 pr-8 rounded-lg text-sm appearance-none focus:outline-none focus:ring-1 focus:ring-[#006C35]">
                    <option>دورة قياس 1</option>
                    <option>دورة قياس 2</option>
                    <option>دورة قياس 3</option>
@@ -1278,17 +1298,17 @@ const GeneralDashboardView = ({ onNavigateToHome }) => {
                 <ChevronDown className="absolute left-3 top-3 w-4 h-4 text-gray-400 pointer-events-none" />
               </div>
            </div>
-
            <div className="relative">
               <label className="block text-xs font-bold text-gray-500 mb-1">الجهة</label>
               <div className="relative">
-                <input type="text" placeholder="ابحث عن جهة..." className="w-full bg-gray-50 border border-gray-200 text-gray-700 py-2.5 px-3 pr-8 rounded-lg text-sm focus:outline-none focus:border-[#006C35] focus:ring-1 focus:ring-[#006C35]" />
+                <input type="text" placeholder="ابحث عن جهة..." className="w-full bg-gray-50 border border-gray-200 text-gray-700 py-2.5 px-3 pr-8 rounded-lg text-sm focus:outline-none focus:border-[#006C35]" />
                 <Search className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
               </div>
            </div>
         </div>
       </div>
 
+      {/* 3. بطاقات الأداء (KPIs) */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
          <div className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm flex items-center justify-between relative overflow-hidden">
             <div>
@@ -1299,7 +1319,6 @@ const GeneralDashboardView = ({ onNavigateToHome }) => {
                <Layers className="w-6 h-6" />
             </div>
          </div>
-
          <div className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm flex items-center justify-between relative overflow-hidden">
             <div>
                <p className="text-sm font-medium text-gray-500 mb-1">عدد المنصات التي تم تبنيها</p>
@@ -1311,84 +1330,118 @@ const GeneralDashboardView = ({ onNavigateToHome }) => {
          </div>
       </div>
 
+      {/* 4. الرسوم البيانية: نسبة الامتثال والمعايير */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
          <div className="lg:col-span-4 bg-white rounded-xl border border-gray-100 p-6 shadow-sm">
-            <div className="flex justify-between items-center mb-2">
-               <h3 className="text-base font-bold text-gray-900">نسبة المنصات في مرحلة القياس</h3>
-               <div className="relative">
-                  <select className="appearance-none bg-white text-xs text-gray-500 border border-gray-200 py-1 pr-3 pl-7 rounded hover:bg-gray-50 focus:outline-none focus:border-[#006C35] cursor-pointer">
-                     <option>الكل</option>
-                     <option>دورة 1</option>
-                     <option>دورة 2</option>
-                  </select>
-                  <ChevronDown className="absolute left-2 top-1/2 transform -translate-y-1/2 w-3 h-3 text-gray-400 pointer-events-none" />
-               </div>
-            </div>
-            
+            <h3 className="text-base font-bold text-gray-900 mb-2">نسبة المنصات في مرحلة القياس</h3>
             <div className="h-[300px] w-full relative flex flex-col items-center justify-center">
                <ResponsiveContainer width="100%" height={250}>
                   <PieChart>
-                     <Pie
-                        data={complianceData}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={60}
-                        outerRadius={80}
-                        paddingAngle={5}
-                        dataKey="value"
-                        stroke="none"
-                     >
-                        {complianceData.map((entry, index) => (
-                           <Cell key={`cell-${index}`} fill={entry.color} />
-                        ))}
+                     <Pie data={complianceData} cx="50%" cy="50%" innerRadius={60} outerRadius={80} paddingAngle={5} dataKey="value" stroke="none">
+                        {complianceData.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.color} />)}
                      </Pie>
-                     <Tooltip contentStyle={{borderRadius: '8px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', fontFamily: 'IBM Plex Sans Arabic'}} />
+                     <Tooltip />
                      <Legend verticalAlign="bottom" height={36} iconType="circle" />
                   </PieChart>
                </ResponsiveContainer>
-               <div className="absolute top-[42%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none">
+               <div className="absolute top-[42%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
                   <span className="text-3xl font-bold text-[#111827]">67%</span>
                </div>
-               <div className="text-center mt-2">
-                  <span className="text-sm font-bold text-[#111827]">نسبة الامتثال</span>
-               </div>
-         </div>
+            </div>
          </div>
 
          <div className="lg:col-span-8 bg-white rounded-xl border border-gray-100 p-6 shadow-sm flex flex-col">
-            <div className="flex justify-between items-center mb-6">
-               <h3 className="text-base font-bold text-gray-900">أكثر المعايير غير مستوفاة</h3>
-            </div>
-            
+            <h3 className="text-base font-bold text-gray-900 mb-6">أكثر المعايير غير مستوفاة</h3>
             <div className="flex-1 w-full" dir="ltr">
-               <ResponsiveContainer width="100%" height={400}>
-                  <BarChart
-                     layout="vertical"
-                     data={displayedCriteria}
-                     margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                     barSize={20}
-                  >
+               <ResponsiveContainer width="100%" height={showAllCriteria ? 1200 : 400}>
+                  <BarChart layout="vertical" data={displayedCriteria} margin={{ left: 20 }}>
                      <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#F3F4F6" />
-                     <XAxis type="number" tick={{fontSize: 11, fill: '#6B7280'}} axisLine={false} tickLine={false} />
-                     <YAxis dataKey="name" type="category" width={80} tick={{fontSize: 11, fill: '#6B7280'}} axisLine={false} tickLine={false} />
-                     <Tooltip cursor={{fill: '#F9FAFB'}} contentStyle={{borderRadius: '8px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', fontFamily: 'IBM Plex Sans Arabic', direction: 'rtl'}} />
+                     <XAxis type="number" tick={{fontSize: 11}} axisLine={false} tickLine={false} />
+                     <YAxis dataKey="name" type="category" width={80} tick={{fontSize: 11}} axisLine={false} tickLine={false} />
+                     <Tooltip />
                      <Bar dataKey="value" fill="#006C35" radius={[0, 4, 4, 0]} name="عدد مرات عدم التطبيق" />
                   </BarChart>
                </ResponsiveContainer>
             </div>
-            
-            <div className="mt-4 text-center border-t border-gray-50 pt-4">
-               <button 
-                  onClick={() => setShowAllCriteria(!showAllCriteria)}
-                  className="text-sm font-medium text-[#006C35] hover:bg-[#E6F4EA] px-4 py-2 rounded-lg transition-colors flex items-center gap-2 mx-auto"
-               >
-                  {showAllCriteria ? 'إخفاء المعايير' : 'عرض المزيد من المعايير'}
-                  <ChevronDown className={`w-4 h-4 transition-transform ${showAllCriteria ? 'rotate-180' : ''}`} />
-               </button>
-            </div>
+            <button onClick={() => setShowAllCriteria(!showAllCriteria)} className="mt-4 text-sm font-medium text-[#006C35] flex items-center gap-2 mx-auto">
+               {showAllCriteria ? 'إخفاء المعايير' : 'عرض المزيد من المعايير'} <ChevronDown className={showAllCriteria ? 'rotate-180' : ''} />
+            </button>
          </div>
       </div>
 
+      {/* 5. الرسوم البيانية: المنصات الأعلى والأقل امتثالاً */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm">
+             <h3 className="text-base font-bold text-gray-900 mb-6">منصات منخفضة الامتثال في دورة 2</h3>
+             <div className="h-[300px] w-full" dir="ltr">
+               <ResponsiveContainer width="100%" height="100%">
+                  <BarChart layout="vertical" data={lowComplianceData} margin={{ left: 40 }}>
+                     <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#F3F4F6" />
+                     <XAxis type="number" domain={[0, 100]} />
+                     <YAxis dataKey="name" type="category" width={80} />
+                     <Tooltip />
+                     <Bar dataKey="value" fill="#006C35" radius={[0, 4, 4, 0]} />
+                  </BarChart>
+               </ResponsiveContainer>
+             </div>
+          </div>
+          <div className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm">
+             <h3 className="text-base font-bold text-gray-900 mb-6">المنصات الأعلى امتثالية</h3>
+             <div className="h-[300px] w-full" dir="ltr">
+               <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={topComplianceData}>
+                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F3F4F6" />
+                     <XAxis dataKey="name" tick={{fontSize: 10}} dy={10} />
+                     <YAxis domain={[0, 100]} />
+                     <Tooltip />
+                     <Legend verticalAlign="top" align="right" />
+                     <Bar dataKey="primary" name="المعايير الأساسية" fill="#9CA3AF" radius={[4, 4, 0, 0]} />
+                     <Bar dataKey="secondary" name="المعايير الثانوية" fill="#006C35" radius={[4, 4, 0, 0]} />
+                  </BarChart>
+               </ResponsiveContainer>
+             </div>
+          </div>
+      </div>
+
+      {/* 6. الرسوم البيانية الإضافية (من التصميم الأصلي) */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm">
+          <h3 className="text-base font-bold text-gray-900 mb-6">المنصات الممتثلة (سنوي)</h3>
+          <div className="h-[280px] w-full" dir="ltr">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={barData} barSize={12}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                <XAxis dataKey="name" tick={{fontSize: 11}} dy={10} />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="value" fill="#006C35" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+        <div className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm">
+          <h3 className="text-base font-bold text-gray-900 mb-6">نسبة التبني الشهرية</h3>
+          <div className="h-[280px] w-full" dir="ltr">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={lineData}>
+                <defs>
+                  <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#006C35" stopOpacity={0.1}/>
+                    <stop offset="95%" stopColor="#006C35" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                <XAxis dataKey="name" tick={{fontSize: 11}} dy={10} />
+                <YAxis />
+                <Tooltip />
+                <Area type="monotone" dataKey="value" stroke="#006C35" strokeWidth={2} fill="url(#colorValue)" />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </div>
+
+      {/* 7. زر التصدير */}
       <div className="flex justify-end pt-4">
          <button className="bg-[#006C35] text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-[#005a2b] transition-colors flex items-center gap-2 shadow-sm">
             <Download className="w-4 h-4" />
@@ -2548,6 +2601,7 @@ const UserManagementView = ({ onShowToast }) => {
 /* ========================================================================
    MAIN APP CONTROLLER
    ======================================================================== */
+   
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [viewState, setViewState] = useState('landing');
@@ -2555,7 +2609,69 @@ const App = () => {
   const [url, setUrl] = useState('');
   const [activePage, setActivePage] = useState('dashboard');
   const [toast, setToast] = useState({ show: false, message: '' });
+  const [currentPage, setCurrentPage] = useState('dashboard'); // الحالة الأساسية للتنقل
 
+
+  // نظام التنقل البسيط
+  const renderContent = () => {
+    switch (currentPage) {
+      case 'dashboard':
+        return (
+          <DashboardView 
+            onNavigateToGeneral={() => setCurrentPage('general_dashboard')} 
+            onNavigateToDetails={() => setCurrentPage('platform_details')} 
+          />
+        );
+      case 'general_dashboard':
+        return (
+          <div className="p-8 text-right">
+            <button onClick={() => setCurrentPage('dashboard')} className="text-[#006C35] mb-4 font-bold">← العودة للرئيسية</button>
+            <h1 className="text-3xl font-bold">لوحة التحكم العامة</h1>
+            <p className="text-gray-500">محتوى الإحصائيات العامة يظهر هنا.</p>
+          </div>
+        );
+      case 'platform_details':
+        return (
+          <div className="p-8 text-right">
+            <button onClick={() => setCurrentPage('dashboard')} className="text-[#006C35] mb-4 font-bold">← العودة للرئيسية</button>
+            <h1 className="text-3xl font-bold">تفاصيل المنصة والتقارير</h1>
+            <p className="text-gray-500">هنا تظهر نتائج الفحص التفصيلية.</p>
+          </div>
+        );
+      default:
+        return <DashboardView onNavigateToGeneral={() => setCurrentPage('general_dashboard')} onNavigateToDetails={() => setCurrentPage('platform_details')} />;
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-[#F8F9FA] flex flex-col" dir="rtl" style={{ fontFamily: '"IBM Plex Sans Arabic", sans-serif' }}>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap');
+        .animate-fadeIn { animation: fadeIn 0.3s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+      `}</style>
+
+      {/* الهيدر */}
+      <header className="bg-white border-b sticky top-0 z-50 px-4 md:px-8 py-4 flex justify-between items-center shadow-sm">
+        <div className="flex items-center gap-2 cursor-pointer" onClick={() => setCurrentPage('dashboard')}>
+          <div className="w-8 h-8 bg-[#006C35] rounded flex items-center justify-center text-white">
+            <DgaLogo className="w-5 h-5" />
+          </div>
+          <span className="font-bold text-sm">منصة الأمتثال الرقمي</span>
+        </div>
+        <div className="flex gap-4">
+          <button className="text-xs font-bold text-gray-500">English</button>
+          <button className="p-2 bg-gray-100 rounded-full text-gray-500"><User className="w-4 h-4" /></button>
+        </div>
+      </header>
+
+      {/* المحتوى المتغير */}
+      <main className="max-w-7xl mx-auto w-full p-6 md:p-8 flex-grow">
+        {renderContent()}
+      </main>
+    </div>
+  );
+}
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [activePage, viewState]);
@@ -2608,6 +2724,7 @@ const App = () => {
   `;
 
   if (isLoggedIn) {
+
     return (
       <>
         <style>{globalStyles}</style>
@@ -2659,6 +2776,8 @@ const App = () => {
                 onNavigateToHome={() => setActivePage('dashboard')}
               />
             }
+
+            
           </main>
 
           <DashboardFooter />
@@ -2699,3 +2818,4 @@ const App = () => {
 };
 
 export default App;
+
